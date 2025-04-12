@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import WelcomeSection from './components/WelcomeSection.vue'
+import Donations from './components/Donations.vue';
 </script>
 
 <template>
@@ -8,7 +9,8 @@ import HelloWorld from './components/HelloWorld.vue'
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <WelcomeSection msg="You did it!" username="Kent" />
+      <Donations/>
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
