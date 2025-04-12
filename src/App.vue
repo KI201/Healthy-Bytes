@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import WelcomeSection from './components/WelcomeSection.vue'
 import Donations from './components/Donations.vue';
+import HealthyEatingTips from './components/HealthyEatingTips.vue';
 </script>
 
 <template>
@@ -10,7 +11,8 @@ import Donations from './components/Donations.vue';
 
     <div class="wrapper">
       <WelcomeSection msg="You did it!" username="Kent" />
-      <Donations/>
+      <!-- <Donations/> -->
+      <HealthyEatingTips/>
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
