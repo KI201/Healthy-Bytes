@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div class="row mt-5" v-if="submittedCards.length">
+    <!-- <div class="row mt-5" v-if="submittedCards.length">
         <div class="d-flex flex-wrap justify-content-start">
             <div v-for="(card, index) in submittedCards" :key="index" class="card m-2" style="width: 18rem;">
                 <div class="card-header">
@@ -82,7 +82,7 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div> -->
 
   </template>
 
@@ -94,7 +94,7 @@ import { ref } from 'vue';
 // import DataTable from 'primevue/datatable';
 // import Column from 'primevue/column';
 
-import { doc, setDoc } from 'firebase/firestore';
+import { getDoc,doc, setDoc } from 'firebase/firestore';
 import db from '../firebase/init.js';
 // Dylan, the above .. is important, it goes back futher in the tree, otherwise it trys to find the file in the same folder as this one, which is not where it is
 
@@ -135,7 +135,6 @@ const register = () => {
 }
 
 const signIn = () => {
-
   const auth = getAuth(); // get the firebase auth instance, this is firebases official method to get the auth instance
   // auth is saved in local storage, so we can use it to check if the user is logged in maybe?
 
@@ -146,8 +145,8 @@ const signIn = () => {
         console.log('User signed in successfully:', data.user);
         createUserProfile(); // CAREFUL, CHECK THAT REGISTRATION, GOOGLE SIGN IN AND EMAIL SIGN DONT KEEP CREATING ADDITIONAL USER PROFILES IN FIRESTORE
         console.log(auth.currentUser); // log the current user to the console
-
-        router.push('/garden'); // redirect to the garden view after successful registration
+        fetchUserRole(); // If its admin maybe we can redirect to the admin page or something, or just show a different view
+        // router.push('/admin'); // redirect to the admin view after successful registration
       })
       .catch((error) => {
         console.log('error.code');
@@ -168,7 +167,8 @@ const signInWithGoogle = () => {
     .then((result) => {
       console.log(result.user);
       createUserProfile(); // Call the function to create a user profile in Firestore HERE SINCE IT DIDNT GET A USERNAME, IT DID NOT PROCEED, need to change rules on this a few ways
-      router.push('/garden'); // redirect to the garden view after successful registration for now
+      // gets role, part of that code redirects based on role to correct view
+      fetchUserRole(); // Admins wont be able to sign in with google, so we need to check if the user is an admin or not, and redirect them to the admin page if they are
     })
     .catch((error) => {
       // Handle Errors here.
@@ -181,27 +181,60 @@ const signInWithGoogle = () => {
 // Note: Apparently vuefire could have made this alot easier
 // This function creates a user profile in Firestore when the user is registered or logged in.
 const createUserProfile = async () => {
-  const auth = getAuth(); // here auth is the service
-  const user = auth.currentUser; // user is the actual logged-in user auth
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   if (user) {
-    const userRef = doc(db, 'users', user.uid); // db is firestore instance, users is the collection, user.uid is the unique id of the user logged in.
-    // the doc() writes a document to the users collection using uid as the document id
-    const username = formData.value.userName?.trim (); // here it sets a local variable to take from the userName from formData, so maybe we do need to keep formData, since it
-    // ... commenting out clearform or delaying it will give it no userName to send to firebase
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
 
-    if (!username) {
-      console.warn('No username provided, skipping Firestore write');
-      return;
+    // Only create user profile if it doesn't exist
+    if (!userSnap.exists()) {
+      const username = formData.value.userName?.trim();
+      if (!username) {
+        console.warn('No username provided, skipping Firestore write');
+        return;
+      }
+
+      await setDoc(userRef, {
+        userName: username,
+        email: user.email,
+        role: "user", // default role
+        gender: formData.value.gender,
+        isAustralian: formData.value.isAustralian,
+        reason: formData.value.reason,
+        suburb: formData.value.suburb
+      });
+
+      console.log('User profile created with role: user');
+    } else {
+      console.log('User profile already exists.');
     }
-    // setting only the required fields to the user profile in Firestore
-    // The rest is stored as hash with firebase auth, so we dont need to store it in firestore
-    await setDoc(userRef, {
-      userName: username,
-      email: user.email,
-    });
+  }
+};
 
-    console.log('User profile created');
+const fetchUserRole = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (user) {
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const role = userSnap.data().role;
+      console.log('User role:', role);
+      // Saving roles to local storage would be a security risk, so we should avoid that.
+
+      // Conditional redirect based on role
+      if (role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/garden');
+      }
+    } else {
+      console.warn('No role found for this user.');
+    }
   }
 };
 
