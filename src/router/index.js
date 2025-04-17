@@ -10,6 +10,8 @@ import ForumList from '@/views/ForumList.vue'
 import DiscussionDetails from '@/views/DiscussionDetails.vue'
 import Administrator from '@/views/Administrator.vue'
 import SunSafetyQuizPage from '@/views/SunSafetyQuizPage.vue'
+import Register from '@/views/Register.vue'
+import SignIn from '@/views/SignIn.vue'
 import store from '../store/store'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import db from '../firebase/init.js'
@@ -84,6 +86,16 @@ const router = createRouter({
       path: '/treatment',
       name: 'treatment',
       component: () => import('../views/Treatment.vue'),
+    },
+    {
+      path: '/signin',
+      name: 'SignIn',
+      component: () => import('../views/SignIn.vue')
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: () => import('../views/Register.vue')
     }
   ],
 })
