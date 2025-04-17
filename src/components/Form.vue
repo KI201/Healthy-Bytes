@@ -169,7 +169,11 @@ const signInWithGoogle = () => {
       createUserProfile(); // Call the function to create a user profile in Firestore HERE SINCE IT DIDNT GET A USERNAME, IT DID NOT PROCEED, need to change rules on this a few ways
       // gets role, part of that code redirects based on role to correct view
       fetchUserRole(); // Admins wont be able to sign in with google, so we need to check if the user is an admin or not, and redirect them to the admin page if they are
+      router.push('/'); // redirect to the home view after successful registration
     })
+
+    // Google sign in fetchrole cant redirect as it needs role, so we force it
+
     .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;

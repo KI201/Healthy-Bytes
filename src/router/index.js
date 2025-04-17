@@ -3,18 +3,20 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
-import GardenView from '@/views/GardenView.vue' // WHY DID I USE @? // I think this is a shortcut to the src folder, so I can use @/views instead of ../../views
+import GardenView from '@/views/GardenView.vue'
 import AccessDenial from '@/views/AccessDenial.vue'
 import CreateDiscussion from '@/views/CreateDiscussion.vue'
 import ForumList from '@/views/ForumList.vue'
-import DiscussionDetails from '@/views/DiscussionDetails.vue' // import the discussion details view
-import SunSafetyQuizPage from '@/views/SunSafetyQuizPage.vue' // import the sun safety quiz page
-import store from '../store/store'; // import store, again not super sure we use this for auth anymore, but maybe for local storage?
-import { getAuth, onAuthStateChanged } from 'firebase/auth'; // import firebase auth
-
+import DiscussionDetails from '@/views/DiscussionDetails.vue'
+import Administrator from '@/views/Administrator.vue'
+import SunSafetyQuizPage from '@/views/SunSafetyQuizPage.vue'
+import store from '../store/store'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import db from '../firebase/init.js'
+import { doc, getDoc } from 'firebase/firestore'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL), 
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -24,29 +26,35 @@ const router = createRouter({
     {
       path: '/sun-safety-quiz',
       name: 'sun-safety-quiz',
-      component: () => import('../views/SunSafetyQuizPage.vue'), // lazy load the component ( think this is what this line does double check)
+      component: () => import('../views/SunSafetyQuizPage.vue'), // lazy load
     },
     {
       path: '/about',
       name: 'about',
-      // lazy-loaded when the route is visited. So it doesnt load the component until the route is visited
-      // this is done for performance reasons
-      // this is called code splitting
-      component: () => import('../views/AboutView.vue'), // lazy load the component ( think this is what this line does double check)
+      component: () => import('../views/AboutView.vue'), // lazy load
     },
     {
       path: '/login',
       name: 'login',
       component: LoginView,
     },
-    // {
-    //   path: '/garden',
-    //   name: 'garden',
-    //   component: GardenView,
-    //   meta: {
-    //     requiresAuth: true, // This route requires authentication
-    //   }
-    // },
+    {
+      path: '/garden',
+      name: 'garden',
+      component: GardenView,
+      meta: {
+        requiresAuth: true, // authenticated users only
+      }
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Administrator,
+      meta: {
+        requiresAuth: true, // authenticated users only
+        requiresAdmin: true, // admin role required
+      }
+    },
     {
       path: '/denied',
       name: 'denied',
@@ -60,62 +68,69 @@ const router = createRouter({
     {
       path: '/risk-assessnent',
       name: 'risk-assessment',
-      component: () => import('../views/RiskAssessment.vue'), // lazy load
+      component: () => import('../views/RiskAssessment.vue'),
     },
-    { 
-      path: '/create-discussion', // Page when user wants to create a discussion
+    {
+      path: '/create-discussion',
       name: 'create-discussion',
       component: CreateDiscussion,
     },
     {
-      path: '/discussion/:id', // note id is a dynamic segment, it will be replaced with the actual id of the discussion
+      path: '/discussion/:id',
       name: 'DiscussionDetails',
       component: DiscussionDetails,
     },
     {
       path: '/treatment',
       name: 'treatment',
-      component: () => import('../views/Treatment.vue'), // lazy load
+      component: () => import('../views/Treatment.vue'),
     }
   ],
 })
 
-// remember you need to add this router to main.js by app.use(router)
-
-// could use from below to say only if you are trying to use member only features we want to login first
-
+// returns a Promise that resolves with the currently signed-in user
 const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
-    const removeListerner = onAuthStateChanged(
+    const removeListener = onAuthStateChanged(
       getAuth(),
       (user) => {
-        removeListerner(); // remove the listener after we get the user
-        resolve(user); // resolve the promise with the user
+        removeListener()
+        resolve(user)
       },
       reject
-    );
-  });
-};
+    )
+  })
+}
 
+// Navigation guard
 router.beforeEach(async (to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // this route requires auth, check if logged in
-    if (await getCurrentUser()) {
-      // above gets current user using firebase getAuth method, enacts if user exists (logged in)
-      next();
-    } else {
-      alert('You must be logged in to access this page');
-      // redirect to login page
-      next({ name: 'login' });
-    }
-  } else {
-    // route does not require auth, proceed
-    next();
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin)
+
+  const user = await getCurrentUser()
+
+  if (requiresAuth && !user) {
+    // not logged in but trying to access protected page
+    alert('You must be logged in to access this page')
+    next({ name: 'login' })
+    return
   }
-});
 
+  if (requiresAdmin && user) {
+    // if admin role is required, check Firestore
+    const userRef = doc(db, 'users', user.uid)
+    const userSnap = await getDoc(userRef)
 
+    if (userSnap.exists() && userSnap.data().role === 'admin') {
+      next() // user is admin
+    } else {
+      next({ name: 'denied' }) // user is logged in but not admin
+    }
+    return
+  }
 
-
+  // everything else is okay
+  next()
+})
 
 export default router
