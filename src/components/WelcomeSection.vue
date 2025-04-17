@@ -16,7 +16,6 @@ defineProps({
     <h1 class="green">{{ msg }},{{ username }}</h1>
     <h3>
       Welcome to the application, lets get good at this stuff.
-      You’ve successfully created a project with
       <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
       <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
     </h3>

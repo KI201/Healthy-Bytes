@@ -3,25 +3,61 @@ import { RouterLink, RouterView } from 'vue-router'
 import WelcomeSection from './components/WelcomeSection.vue'
 import Donations from './components/Donations.vue';
 import HealthyEatingTips from './components/HealthyEatingTips.vue';
+import Form from './components/Form.vue';
+import router from './router';
+import BHeader from './components/BHeader.vue';
+import FooterComponent from './components/FooterComponent.vue';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+//DB related things
+// Import Vue's lifecycle hook to run code when the component is mounted
+import { onMounted } from 'vue';
+
+// Import the Firebase Firestore instance from your config file
+import db from './firebase/init.js';
+
+// Import Firestore functions to work with collections and documents
+import { collection, addDoc } from 'firebase/firestore';
+
+
+// THIS CODE BELOW IS GOOD BUT CREATES A USER COLLECTION WITHOUT TYING TO A USER AUTHENTICATION
+// // Define an async function to create a new user document
+// const createUser = async () => {
+//   // Reference the 'users' collection in Firestore
+//   const colRef = collection(db, 'users');
+
+//   // Define the data object to store in the new document
+//   const dataObj = {
+//     firstName: 'John',
+//     lastName: 'Doe',
+//     dob: '1990'
+//   };
+
+//   // Add the document to Firestore and get the document reference
+//   const docRef = await addDoc(colRef, dataObj);
+
+//   // Log the auto-generated document ID to the console
+//   console.log('Document written with ID: ', docRef.id);
+// }
+
+// // Call createUser when the component is mounted to the DOM
+// onMounted(() => {
+//   createUser();
+// });
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <WelcomeSection msg="You did it!" username="Kent" />
-      <!-- <Donations/> -->
-      <HealthyEatingTips/>
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div class="main-container">
+    <header>
+      <BHeader />
+    </header>
+    <main class="main-box">
+      <router-view></router-view>
+    </main>
+    <footer>
+      <FooterComponent />
+    </footer>
+  </div>
 </template>
 
 <style scoped>
@@ -85,5 +121,7 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+
 }
+
 </style>
