@@ -30,7 +30,7 @@
 
       <!-- Auth Buttons: Mobile (centered, below 1200px) -->
       <div class="w-100 d-lg-none text-center mt-3">
-        <span v-if="isLoggedIn" class="fw-bold text-orange d-block">{{ userName }}</span>
+        <span v-if="isLoggedIn && userName" class="fw-bold text-orange d-block">{{ userName }}</span>
         <button v-if="isLoggedIn" @click="handleSignout" class="btn btn-light text-orange-red fw-bold mt-2">
           Sign Out
         </button>
@@ -79,7 +79,7 @@ onMounted(() => {
       isLoggedIn.value = true;
       const userRef = doc(db, 'users', user.uid);
       const userSnap = await getDoc(userRef);
-      userName.value = userSnap.data()?.userName || 'Unnamed';
+      userName.value = userSnap.data()?.userName;
     } else {
       isLoggedIn.value = false;
       userName.value = '';
