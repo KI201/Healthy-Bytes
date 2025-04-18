@@ -291,7 +291,7 @@
         if (role === 'admin') {
           router.push('/admin');
         } else {
-          router.push('/garden');
+          router.push('/');
         }
       } else {
         console.warn('No role found for this user.');
