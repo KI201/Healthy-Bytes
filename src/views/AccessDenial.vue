@@ -1,3 +1,3 @@
 <template>
-    <h1>YOU SHALL NOT PASS</h1>
+    <h1>Denied: Administrators Only</h1>
 </template>

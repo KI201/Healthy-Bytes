@@ -4,7 +4,7 @@
       <!-- Logo and Site Title -->
       <router-link to="/" class="d-flex align-items-center text-white text-decoration-none me-4">
         <img src="@/assets/logo.png" alt="Logo" class="me-2 logo-img" />
-        <span class="fs-4 fw-bold">Melanoma Society Australia</span>
+        <span class="fs-4 fw-bold">MSA</span>
       </router-link>
 
       <!-- Nav Menu -->
@@ -22,9 +22,9 @@
             <li><router-link to="/treatment" class="dropdown-item">Treatment</router-link></li>
           </ul>
         </li>
-        <li><router-link to="/risk-assessnent" class="nav-link px-2 link-light">Risk Assessment</router-link></li>
+        <li><router-link to="/risk-assessment" class="nav-link px-2 link-light">Risk Assessment</router-link></li>
         <li><router-link to="/forum" class="nav-link px-2 link-light">Forums</router-link></li>
-        
+        <li><router-link to="/fundraising" class="nav-link px-2 link-light">Events</router-link></li>
         <li><router-link to="/about" class="nav-link px-2 link-light">About</router-link></li>
       </ul>
 

@@ -7,6 +7,7 @@ import RiskAssessmentQuiz from '@/components/RiskAssessmentQuiz.vue';
 <template>
   <main class="container py-5">
     <!-- Section: News Preview -->
+     <h1 class="webTitle">Melanona Society Australia</h1>
     <section class="mb-4 text-center">
       <div class="border border-warning rounded p-4 bg-light mx-auto">
         <NewsPreview />
@@ -58,19 +59,19 @@ import RiskAssessmentQuiz from '@/components/RiskAssessmentQuiz.vue';
 }
 
 .text-warning {
-  color: #ff5733 !important; /* Orange-red color */
+  color: #ff5733 !important;
 }
 
 .text-dark {
-  color: #000000 !important; /* Black text */
+  color: #000000 !important;
 }
 
 .bg-light {
-  background-color: #ffffff !important; /* White background */
+  background-color: #ffffff !important;
 }
 
 .border-warning {
-  border-color: #ff5733 !important; /* Orange-red border */
+  border-color: #ff5733 !important;
 }
 
 .rounded {
@@ -81,7 +82,6 @@ import RiskAssessmentQuiz from '@/components/RiskAssessmentQuiz.vue';
   padding: 20px;
 }
 
-/* Center everything using flexbox */
 .text-center {
   text-align: center;
 }
@@ -91,7 +91,7 @@ import RiskAssessmentQuiz from '@/components/RiskAssessmentQuiz.vue';
   margin-right: auto;
 }
 
-/* Banner Image Styling */
+
 .banner-container {
   width: 100%;
   overflow: hidden;
@@ -103,5 +103,14 @@ import RiskAssessmentQuiz from '@/components/RiskAssessmentQuiz.vue';
   object-fit: cover;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+.webTitle {
+  font-size: 2.5rem;
+  color: orangered;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold; 
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); 
 }
 </style>

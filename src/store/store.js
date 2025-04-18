@@ -26,5 +26,3 @@ export default createStore({
     },
 });
 
-// still havent linked login information to state yet
-// above is how I think we will interact with firebase 

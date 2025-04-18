@@ -189,7 +189,7 @@
         console.log('User registered successfully:', data.user);
         await createUserProfile();
         sendWelcomeEmail();
-        router.push('/garden'); // make this redirect where they 
+        router.push('/'); 
       })
       .catch((error) => {
         console.log('error.code');

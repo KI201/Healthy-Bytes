@@ -1,51 +1,70 @@
 <template>
-    <footer class="footer">
-      <div class="donate-section">
-        <p class="legal">© 2025 Melanoma Society Australia. All rights reserved.
-Melanoma Society Australia is a not-for-profit organisation committed to raising awareness, supporting prevention, and advocating for those affected by melanoma.
-This website is for informational purposes only.
-By using this site, you agree to our Terms of Use and Privacy Policy.</p>
+  <footer class="footer">
+    <div class="donate-section">
+      <p class="legal">
+        © 2025 Melanoma Society Australia. All rights reserved.
+        Melanoma Society Australia is a not-for-profit organisation committed to raising awareness,
+        supporting prevention, and advocating for those affected by melanoma.
+        This website is for informational purposes only.
+        By using this site, you agree to our Terms of Use and Privacy Policy.
+      </p>
+    </div>
 
+    <hr class="divider" />
+
+    <div class="footer-links">
+      <div class="footer-column">
+        <h3 class="footer-heading">Learn More</h3>
+        <a href="/about">About us</a>
+        <a href="/faq">FAQ</a>
+        <a href="/contact">Contact us</a>
       </div>
-  
-      <hr class="divider" />
-  
-      <div class="footer-links">
-        <div class="footer-column">
-          <h3 class="footer-heading">Learn More</h3>
-          <a href="/">About us</a>
-          <a href="/">About Melanoma</a>
-          <a href="/">FAQ</a>
-          <a href="/">Contact us</a>
-        </div>
-  
-        <div class="footer-column">
-          <h3 class="footer-heading">Help Out</h3>
-          <a href="/">Fundraising</a>
-          <a href="/">Donate</a>
-          <a v-if="!isLoggedIn" href="/">Join</a>
-        </div>
-  
-        <div class="footer-column">
-          <h3 class="footer-heading">Resources</h3>
-          <a href="/">Risk assessment</a>
-          <a href="/">Clinic finder</a>
-          <a href="/">Patient resources</a>
-        </div>
+
+      <div class="footer-column">
+        <h3 class="footer-heading">Help Out</h3>
+        <a href="/fundraising">Fundraising</a>
+        <a href="/donate">Donate</a>
+        <a v-if="!isLoggedIn" href="/">Join</a>
       </div>
-    </footer>
-  </template>
+
+      <div class="footer-column">
+        <h3 class="footer-heading">Resources</h3>
+        <a href="/risk-assessment">Risk assessment</a>
+        <a href="/treatment">treatment</a>
+        <a v-if="isAdmin" href="/admin">Admin</a>
+      </div>
+    </div>
+  </footer>
+</template>
   
   <script setup>
-  import Donations from '@/components/Donations.vue'
-  import { getAuth, onAuthStateChanged } from 'firebase/auth'
   import { ref, onMounted } from 'vue'
+  import { getAuth, onAuthStateChanged } from 'firebase/auth'
+  import { doc, getDoc } from 'firebase/firestore'
+  import db from '@/firebase/init'
   
   const isLoggedIn = ref(false)
+  const isAdmin = ref(false)
+  
   const auth = getAuth()
+  
   onMounted(() => {
-    onAuthStateChanged(auth, user => {
-      isLoggedIn.value = !!user
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        isLoggedIn.value = true
+  
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid))
+          if (userDoc.exists() && userDoc.data().role === 'admin') {
+            isAdmin.value = true
+          }
+        } catch (e) {
+          console.error('Failed to check admin role:', e)
+        }
+      } else {
+        isLoggedIn.value = false
+        isAdmin.value = false
+      }
     })
   })
   </script>

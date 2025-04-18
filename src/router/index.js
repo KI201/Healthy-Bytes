@@ -8,6 +8,9 @@ import CreateDiscussion from '@/views/CreateDiscussion.vue'
 import ForumList from '@/views/ForumList.vue'
 import DiscussionDetails from '@/views/DiscussionDetails.vue'
 import Administrator from '@/views/Administrator.vue'
+import ContactPage from '@/views/ContactPage.vue'
+import FundraisingEvents from '@/views/FundraisingEvents.vue'
+import FAQ from '@/views/FAQ.vue'
 import FastFacts from '@/views/FastFacts.vue'
 import SunSafetyQuizPage from '@/views/SunSafetyQuizPage.vue'
 import Register from '@/views/Register.vue'
@@ -16,6 +19,7 @@ import store from '../store/store'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import db from '../firebase/init.js'
 import { doc, getDoc } from 'firebase/firestore'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,7 +64,7 @@ const router = createRouter({
       component: ForumList,
     },
     {
-      path: '/risk-assessnent',
+      path: '/risk-assessment',
       name: 'risk-assessment',
       component: () => import('../views/RiskAssessment.vue'),
     },
@@ -103,6 +107,16 @@ const router = createRouter({
       path: '/donate',
       name: 'Donate',
       component: () => import('../views/DonationPage.vue'),
+    },
+    {
+      path: '/contact',
+      name: 'Contact',
+      component: ContactPage,
+    },
+    {
+      path: '/fundraising',
+      name: 'Fundraising',
+      component: () => import('../views/FundraisingEvents.vue'),
     }
   ],
 })
@@ -131,7 +145,7 @@ router.beforeEach(async (to, from, next) => {
   if (requiresAuth && !user) {
     // not logged in but trying to access protected page
     alert('You must be logged in to access this page')
-    next({ name: 'login' })
+    next({ name: 'signIn' })
     return
   }
 
@@ -143,7 +157,7 @@ router.beforeEach(async (to, from, next) => {
     if (userSnap.exists() && userSnap.data().role === 'admin') {
       next() // user is admin
     } else {
-      next({ name: 'denied' }) // user is logged in but not admin
+      next({ name: 'signin' }) // user is logged in but not admin
     }
     return
   }
