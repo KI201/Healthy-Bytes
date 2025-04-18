@@ -152,6 +152,9 @@
   import db from '../firebase/init.js';
   
   const router = useRouter(); 
+  const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
   
   // Warning for missing field
   const generalError = ref('');
@@ -186,7 +189,7 @@
         console.log('User registered successfully:', data.user);
         await createUserProfile();
         sendWelcomeEmail();
-        router.push('/garden');
+        router.push('/garden'); // make this redirect where they 
       })
       .catch((error) => {
         console.log('error.code');
@@ -263,7 +266,7 @@
     email: formData.value.email,
   };
 
-  emailjs.send('service_yoyp9nn', 'template_y5a4kek', templateParams, 'K1DkAZeU678VctXa1')
+  emailjs.send(serviceID, templateID, templateParams, publicKey)
     .then(response => {
       console.log('Welcome email sent successfully', response);
     })
@@ -394,13 +397,7 @@
     else errors.value.state = null;
   };
   
-  const greatFriend = (blur) => {
-    if (formData.value.reason.toLowerCase().includes("friend")) {
-      if (blur) errors.value.reason = "It's great to have a friend.";
-    } else {
-      errors.value.reason = null;
-    }
-  };
+
   </script>
   
 

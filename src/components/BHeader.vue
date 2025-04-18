@@ -90,7 +90,9 @@ onMounted(() => {
 
 const handleSignout = () => {
   signOut(auth).then(() => {
-    router.push('/signin');
+    isLoggedIn.value = false;
+    userName.value = '';
+    location.reload(); // Reload the page to reflect the sign-out
   });
 };
 </script>
