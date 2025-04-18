@@ -3,12 +3,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
-import GardenView from '@/views/GardenView.vue'
 import AccessDenial from '@/views/AccessDenial.vue'
 import CreateDiscussion from '@/views/CreateDiscussion.vue'
 import ForumList from '@/views/ForumList.vue'
 import DiscussionDetails from '@/views/DiscussionDetails.vue'
 import Administrator from '@/views/Administrator.vue'
+import FastFacts from '@/views/FastFacts.vue'
 import SunSafetyQuizPage from '@/views/SunSafetyQuizPage.vue'
 import Register from '@/views/Register.vue'
 import SignIn from '@/views/SignIn.vue'
@@ -39,14 +39,6 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
-    },
-    {
-      path: '/garden',
-      name: 'garden',
-      component: GardenView,
-      meta: {
-        requiresAuth: true, // authenticated users only
-      }
     },
     {
       path: '/admin',
@@ -96,6 +88,21 @@ const router = createRouter({
       path: '/register',
       name: 'Register',
       component: () => import('../views/Register.vue')
+    },
+    {
+      path: '/fast-facts',
+      name: 'FastFacts',
+      component: () => import('../views/FastFacts.vue'),
+    },
+    {
+      path: '/faq',
+      name: 'FAQ',
+      component: () => import('../views/FAQ.vue'),
+    },
+    {
+      path: '/donate',
+      name: 'Donate',
+      component: () => import('../views/DonationPage.vue'),
     }
   ],
 })

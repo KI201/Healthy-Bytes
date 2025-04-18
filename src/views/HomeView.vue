@@ -9,15 +9,17 @@ import RiskAssessmentQuiz from '@/components/RiskAssessmentQuiz.vue';
   <main>
     <h1>This is the home page</h1>
     <NewsPreview />
-    <h1>Welcome to the home page</h1>
-    <p>Here you can find the latest news and updates.</p>
-    <p>We are committed to providing you with the best information and resources.</p>
+
+    <p>Your donations go directly to research initiatives focused on early detection, innovative treatments, 
+      and ultimately finding a cure for melanoma. Every contribution supports clinical trials, funds promising 
+      scientific breakthroughs, and helps provide vital resources to patients and families affected 
+      by skin cancer. Together, we’re advancing hope and healing—one donation at a time.</p>
     <br/>
     <Donations/>
     <br/>
     <br/>
-    <h1>Are you at risk?</h1>
-    <p>You can use our risk assessment calulat</p>
+    <h1 class="Riskhook">Whats your risk?</h1>
+    <p>You can use our risk assessment calulater to </p>
     <RiskAssessmentQuiz />
   </main>
 </template>

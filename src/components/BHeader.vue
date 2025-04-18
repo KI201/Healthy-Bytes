@@ -10,33 +10,22 @@
       <!-- Nav Menu -->
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         <li><router-link to="/" class="nav-link px-2 link-light">Home</router-link></li>
-
+        <li><router-link to="/donate" class="nav-link px-2 link-light">Donate</router-link></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle px-2 link-light" href="#" id="infoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Melanoma Information
           </a>
           <ul class="dropdown-menu">
             <li><router-link to="/sun-safety-quiz" class="dropdown-item">Sun Safety Quiz for Kids</router-link></li>
-            <li><router-link to="/news" class="dropdown-item">Melanoma News</router-link></li>
             <li><router-link to="/fast-facts" class="dropdown-item">Fast Facts</router-link></li>
-            <li><router-link to="/statistics" class="dropdown-item">Interactive Statistics</router-link></li>
-          </ul>
-        </li>
-
-        <li><router-link to="/risk-assessnent" class="nav-link px-2 link-light">Risk Assessment</router-link></li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle px-2 link-light" href="#" id="resourcesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Resources
-          </a>
-          <ul class="dropdown-menu">
-            <li><router-link to="/forum" class="dropdown-item">Community Forums</router-link></li>
-            <li><router-link to="/prevention" class="dropdown-item">Prevention</router-link></li>
-            <li><router-link to="/treatment" class="dropdown-item">Treatment</router-link></li>
             <li><router-link to="/faq" class="dropdown-item">Frequently Asked Questions</router-link></li>
+            <li><router-link to="/treatment" class="dropdown-item">Treatment</router-link></li>
+            <li><router-link to="/prevention" class="dropdown-item">Prevention</router-link></li>
           </ul>
         </li>
-
+        <li><router-link to="/risk-assessnent" class="nav-link px-2 link-light">Risk Assessment</router-link></li>
+        <li><router-link to="/forum" class="nav-link px-2 link-light">Forums</router-link></li>
+        
         <li><router-link to="/about" class="nav-link px-2 link-light">About</router-link></li>
       </ul>
 
@@ -91,7 +80,7 @@ onMounted(() => {
       isLoggedIn.value = true;
       const userRef = doc(db, 'users', user.uid);
       const userSnap = await getDoc(userRef);
-      userName.value = userSnap.data()?.name || 'Unnamed';
+      userName.value = userSnap.data()?.userName || 'Unnamed';
     } else {
       isLoggedIn.value = false;
       userName.value = '';

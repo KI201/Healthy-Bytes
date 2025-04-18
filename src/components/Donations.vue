@@ -1,7 +1,4 @@
 <script setup>
-function donatePlease(){
-    alert('thank you for donating')
-}
 </script>
 
 
@@ -9,7 +6,7 @@ function donatePlease(){
     <div  class="donate">
         <h1>Donate Today</h1>
         <p>Click below to donate</p>
-        <button class ="btn" @click="donatePlease">Donate</button>
+        <router-link to="/donate" class="btn">Donate</router-link>
     </div>
 </template>
 

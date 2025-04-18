@@ -148,6 +148,7 @@
   import { useRouter } from 'vue-router';
   import { ref } from 'vue';
   import { getDoc, doc, setDoc } from 'firebase/firestore';
+  import emailjs from 'emailjs-com';
   import db from '../firebase/init.js';
   
   const router = useRouter(); 
@@ -184,6 +185,7 @@
       .then(async (data) => {
         console.log('User registered successfully:', data.user);
         await createUserProfile();
+        sendWelcomeEmail();
         router.push('/garden');
       })
       .catch((error) => {
@@ -253,6 +255,23 @@
       }
     }
   };
+
+
+  const sendWelcomeEmail = () => {
+  const templateParams = {
+    name: formData.value.userName,
+    email: formData.value.email,
+  };
+
+  emailjs.send('service_yoyp9nn', 'template_y5a4kek', templateParams, 'K1DkAZeU678VctXa1')
+    .then(response => {
+      console.log('Welcome email sent successfully', response);
+    })
+    .catch(err => {
+      console.error('Error sending welcome email:', err);
+    });
+};
+
   
   const fetchUserRole = async () => {
     const auth = getAuth();

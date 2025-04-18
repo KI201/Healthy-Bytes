@@ -1,7 +1,9 @@
 <template>
     <div class="background">
-        <h1>Test your knowledge on Sun Safety!</h1>
         <br/>
+        <br/>
+        <br/>
+        <h1>Test your knowledge on Sun Safety!</h1>
         <br/>
         <br/>
         <br/>

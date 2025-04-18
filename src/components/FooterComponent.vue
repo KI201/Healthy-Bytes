@@ -1,12 +1,10 @@
 <template>
     <footer class="footer">
       <div class="donate-section">
-        <p class="donate-message">Your donations go directly to research initiatives
-             focused on early detection, innovative treatments, and ultimately finding
-              a cure for melanoma. Every contribution supports clinical trials, funds
-               promising scientific breakthroughs, and helps provide vital resources
-                to patients and families affected by skin cancer.
-                 Together, we’re advancing hope and healing—one donation at a time.</p>
+        <p class="legal">© 2025 Melanoma Society Australia. All rights reserved.
+Melanoma Society Australia is a not-for-profit organisation committed to raising awareness, supporting prevention, and advocating for those affected by melanoma.
+This website is for informational purposes only.
+By using this site, you agree to our Terms of Use and Privacy Policy.</p>
 
       </div>
   
@@ -65,7 +63,7 @@
     margin-bottom: 2rem;
   }
   
-  .donate-message {
+  .legal {
     max-width: 870px;
     margin: 0 auto;
     font-size: 1.2rem;

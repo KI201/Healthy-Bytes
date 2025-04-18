@@ -30,7 +30,7 @@
           <iframe
             width="100%"
             height="400"
-            src="https://www.youtube.com/embed/VIDEO_ID"
+            src="https://www.youtube.com/embed/yQuxYCttl6g"
             title="Skin Cancer Treatment"
             frameborder="0"
             allowfullscreen
@@ -44,32 +44,32 @@
   const treatments = [
     {
       title: 'Surgery',
-      image: '/img/treatment-surgery.jpg',
+      image: 'https://thumbs.dreamstime.com/b/skin-cancer-melanoma-dermatology-problem-concept-tiny-doctor-oncologist-character-examine-woman-mole-huge-magnifier-surgeon-354791937.jpg',
       description: 'A common treatment where the cancerous area is cut out. Often used for localized skin cancers.'
     },
     {
       title: 'Reconstruction',
-      image: '/img/treatment-reconstruction.jpg',
+      image: 'https://buzzrx.s3.amazonaws.com/8d372495-ab74-4d1e-8299-e550bb6d5294/WhatisAmelanoticMelanoma_.png',
       description: 'Post-surgery reconstruction helps restore appearance, especially in sensitive areas.'
     },
     {
       title: 'Radiation Therapy',
-      image: '/img/treatment-radiation.jpg',
+      image: 'https://media.istockphoto.com/id/635911932/vector/radiation-therapy-vector-concept-cancer-treatment-with-radiothe.jpg?s=612x612&w=0&k=20&c=VPw7SbXCWeVewoH6B-v8DHU6XUhSeeredgo-bS4lw9o=',
       description: 'Uses high-energy rays to target and destroy cancer cells. Often used when surgery isn’t an option.'
     },
     {
       title: 'Chemotherapy',
-      image: '/img/treatment-chemo.jpg',
+      image: 'https://media.istockphoto.com/id/1467847715/vector/woman-with-cancer-patient-undergoing-chemotherapy-medical-intravenous-infusion-female.jpg?s=612x612&w=0&k=20&c=YV-mJworCBbFF7w7BihwqXu4eNXSd05xWHOyCsyJ-KA=',
       description: 'Topical or systemic treatments that kill cancer cells or stop their growth.'
     },
     {
       title: 'Immunotherapy',
-      image: '/img/treatment-immunotherapy.jpg',
+      image: 'https://www.shutterstock.com/image-vector/woman-patient-having-chemotherapy-oncology-600nw-2227111631.jpg',
       description: 'Boosts your immune system to fight cancer. Can be applied as a cream or used systemically.'
     },
     {
       title: 'Photodynamic Therapy',
-      image: '/img/treatment-photodynamic.jpg',
+      image: 'https://www.cancer.gov/sites/g/files/xnrzdm211/files/styles/cgov_article/public/cgov_infographic/2021-08/Photodynamic-Therapy_Process_0.jpg?itok=dEF4w562',
       description: 'A light-based therapy that activates a drug to destroy abnormal cells.'
     }
   ]

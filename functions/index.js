@@ -1,15 +1,9 @@
-// functions/index.js
+import functions from 'firebase-functions';
+import { sendWelcomeEmail } from './sendEmail';
 
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-const { sendWelcomeEmail } = require('./sendEmail');  // Import SendGrid service
-
-admin.initializeApp();
-
-// Firebase trigger: Send a welcome email when a new user registers
-exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
+export const sendWelcomeEmailTrigger = functions.auth.user().onCreate(async (user) => {
   try {
-    await sendWelcomeEmail(user);  // Call SendGrid to send the email
+    await sendWelcomeEmail(user);
   } catch (error) {
     console.error('Error sending welcome email:', error);
   }
