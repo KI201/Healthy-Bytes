@@ -20,7 +20,6 @@
             <li><router-link to="/fast-facts" class="dropdown-item">Fast Facts</router-link></li>
             <li><router-link to="/faq" class="dropdown-item">Frequently Asked Questions</router-link></li>
             <li><router-link to="/treatment" class="dropdown-item">Treatment</router-link></li>
-            <li><router-link to="/prevention" class="dropdown-item">Prevention</router-link></li>
           </ul>
         </li>
         <li><router-link to="/risk-assessnent" class="nav-link px-2 link-light">Risk Assessment</router-link></li>

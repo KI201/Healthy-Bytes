@@ -1,7 +1,7 @@
 <template>
     <section class="news-preview">
     <h2 class="section-title">
-      <router-link to="/news">Latest in Melanoma News</router-link>
+      Latest in Melanoma News
     </h2>
       <div class="news-cards">
         <div
