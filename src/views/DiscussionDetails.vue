@@ -1,50 +1,61 @@
 <template>
-    <div v-if="discussion">
-      <div class="discussion-header">
-        <div class="header-row">
-            <button @click="goBack" class="back-button">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
-            <h2>{{ discussion.title }}</h2>
-        </div>
-        <p><strong>{{ discussion.userName }}</strong></p>
-        <p class="discussion-content">{{ discussion.content }}</p>
-  
+  <div v-if="discussion">
+    <div class="discussion-header">
+      <div class="header-row">
+        <button @click="goBack" class="back-button">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h2>{{ discussion.title }}</h2>
+      </div>
+
+      <p><strong>{{ discussion.userName }}</strong></p>
+      <p class="discussion-content">{{ discussion.content }}</p>
+
+      <div class="like-comment-row">
+        <button class="like-button" @click="toggleDiscussionLike">
+          {{ hasLikedDiscussion ? 'Unlike' : 'Like' }} ({{ discussionLikes }})
+        </button>
         <h3>Comments ({{ comments.length }})</h3>
-        <div v-for="comment in comments" :key="comment.id">
-          <DiscussionReply
-            :comment="comment"
-            :level="0"
-            :isLoggedIn="isLoggedIn"
-            :onReply="submitComment"
-          />
-        </div>
-  
-        <div v-if="isLoggedIn">
-          <h4>Leave a Comment</h4>
-          <textarea v-model="newComment" placeholder="Write your comment..." />
-          <button @click="submitComment()">Reply</button>
-          <p v-if="error" class="error-message">{{ error }}</p>
-        </div>
-  
-        <div v-else>
-          <p><em>You must be signed in to reply.</em></p>
-        </div>
+      </div>
+
+      <div v-for="comment in comments" :key="comment.id">
+        <DiscussionReply
+          :comment="comment"
+          :level="0"
+          :isLoggedIn="isLoggedIn"
+          :onReply="submitComment"
+        />
+      </div>
+
+      <div v-if="isLoggedIn">
+        <h4>Leave a Comment</h4>
+        <textarea v-model="newComment" placeholder="Write your comment..." />
+        <button @click="submitComment()">Reply</button>
+        <p v-if="error" class="error-message">{{ error }}</p>
+      </div>
+
+      <div v-else>
+        <p><em>You must be signed in to reply.</em></p>
       </div>
     </div>
-    <div v-else>
-      <p>Loading discussion...</p>
-    </div>
-  </template>
+  </div>
+  <div v-else>
+    <p>Loading discussion...</p>
+  </div>
+</template>
+
   
   <script setup>
   import { ref, onMounted, computed } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { doc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, increment, updateDoc } from 'firebase/firestore'
+  import { doc, getDoc, collection, addDoc, deleteDoc, serverTimestamp, query, where, getDocs, increment, updateDoc } from 'firebase/firestore'
   import { getAuth, onAuthStateChanged } from 'firebase/auth'
   import db from '../firebase/init.js'
   import DiscussionReply from './DiscussionReply.vue'
   
+  const discussionLikes = ref(0)
+  const hasLikedDiscussion = ref(false)
+
   const route = useRoute()
   const router = useRouter()
   const auth = getAuth()
@@ -79,6 +90,9 @@
       if (u) {
         user.value = u
         isLoggedIn.value = true
+        fetchDiscussionLikes()
+      } else {
+        fetchDiscussionLikes() // Fetch likes even if not logged in
       }
     })
   })
@@ -140,6 +154,50 @@
       console.error('Error posting comment:', e)
     }
   }
+
+  const fetchDiscussionLikes = async () => {
+  const q = query(
+    collection(db, 'likes'),
+    where('targetId', '==', discussion.value.id),
+    where('type', '==', 'discussion')
+  )
+  const snapshot = await getDocs(q)
+  discussionLikes.value = snapshot.size
+  hasLikedDiscussion.value = snapshot.docs.some(doc => doc.data().userId === user.value?.uid)
+}
+
+const toggleDiscussionLike = async () => {
+  if (!user.value) return
+
+  const q = query(
+    collection(db, 'likes'),
+    where('targetId', '==', discussion.value.id),
+    where('userId', '==', user.value.uid),
+    where('type', '==', 'discussion')
+  )
+  const snapshot = await getDocs(q)
+
+  if (!snapshot.empty) {
+    // Unlike
+    await deleteDoc(snapshot.docs[0].ref)
+    discussionLikes.value--
+    hasLikedDiscussion.value = false
+  } else {
+    // Like
+    await addDoc(collection(db, 'likes'), {
+      userId: user.value.uid,
+      targetId: discussion.value.id,
+      type: 'discussion',
+      createdAt: new Date()
+    })
+    discussionLikes.value++
+    hasLikedDiscussion.value = true
+  }
+}
+  
+
+
+
   </script>
   
   <style scoped>
@@ -172,6 +230,21 @@
     line-height: 1.6;
     color: #555;
   }
+  .like-comment-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.like-comment-row h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #ff5722;
+}
+
   
   textarea {
     width: 100%;
@@ -242,6 +315,22 @@
 .back-button i {
   font-size: 1.2rem; /* Adjusted size of the arrow */
   margin-right: 0.5rem; /* Space between the arrow and the text */
+}
+
+.like-button {
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  background-color: #ff6347;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.like-button:hover {
+  background-color: #e5533d;
 }
   </style>
   

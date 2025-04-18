@@ -3,7 +3,6 @@ import { RouterLink, RouterView } from 'vue-router'
 import WelcomeSection from './components/WelcomeSection.vue'
 import Donations from './components/Donations.vue';
 import HealthyEatingTips from './components/HealthyEatingTips.vue';
-import Form from './components/Form.vue';
 import router from './router';
 import BHeader from './components/BHeader.vue';
 import FooterComponent from './components/FooterComponent.vue';
