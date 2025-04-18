@@ -24,7 +24,7 @@
         <h3 class="footer-heading">Help Out</h3>
         <a href="/fundraising">Fundraising</a>
         <a href="/donate">Donate</a>
-        <a v-if="!isLoggedIn" href="/">Join</a>
+        <a v-if="!isLoggedIn" href="/signin">Join</a>
       </div>
 
       <div class="footer-column">
